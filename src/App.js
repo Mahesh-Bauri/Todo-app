@@ -1,9 +1,10 @@
-import { useState, useEffect, useId } from "react";
+import { useState, useEffect } from "react";
 import { nanoid } from "nanoid";
 import "./App.css";
 import TodoList from "./components/TodoList";
 import Inputs from "./components/Inputs";
 import { FaCheckCircle } from "react-icons/fa";
+import { useCallback } from "react";
 
 /* set default Todos using localStorage for offline use */
 
@@ -52,15 +53,6 @@ function App() {
   }
 
   /* 
-  To listen for Enter key and call the handleSubmit 
-  */
-  function handleKeyDown(e) {
-    if (e.key === "Enter") {
-      handleSubmit();
-    }
-  }
-
-  /* 
   set compeleted the Todos 
   */
   function handleComelete(id) {
@@ -90,12 +82,24 @@ function App() {
   }
 
   /* 
+  To listen for Enter key and call the handleSubmit 
+  */
+  const handleKeyDown = useCallback((e) => {
+    if (e.key === "Enter") {
+      handleSubmit();
+    }
+  });
+  // function handleKeyDown(e) {
+
+  // }
+
+  /* 
   here we add event listener for key press and remove as well for memory optimization 
   */
   useEffect(() => {
     window.addEventListener("keypress", handleKeyDown);
     return () => window.removeEventListener("keypress", handleKeyDown);
-  }, [todo]);
+  }, [todo, handleKeyDown]);
 
   /* 
   here we set the todos in localstorage whenever todolist state changes 
