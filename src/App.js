@@ -29,7 +29,7 @@ function App() {
   /* 
    to add new todo in a Todolist 
   */
-  function handleSubmit() {
+  const handleSubmit = useCallback(() => {
     /* if todo is empty then we return nothing (edge case) */
     if (todo === "") return;
     setTodoList((todos) => {
@@ -43,7 +43,7 @@ function App() {
       return newTodoList;
     });
     setTodo("");
-  }
+  }, [todo]);
 
   /* 
   To reset TodoList 
@@ -84,11 +84,14 @@ function App() {
   /* 
   To listen for Enter key and call the handleSubmit 
   */
-  const handleKeyDown = useCallback((e) => {
-    if (e.key === "Enter") {
-      handleSubmit();
-    }
-  });
+  const handleKeyDown = useCallback(
+    (e) => {
+      if (e.key === "Enter") {
+        handleSubmit();
+      }
+    },
+    [handleSubmit]
+  );
   // function handleKeyDown(e) {
 
   // }
